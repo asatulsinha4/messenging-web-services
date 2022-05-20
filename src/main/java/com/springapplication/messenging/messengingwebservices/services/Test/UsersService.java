@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.springapplication.messenging.messengingwebservices.Eceptions.test.CustomException;
+import com.springapplication.messenging.messengingwebservices.Exceptions.test.CustomException;
 import com.springapplication.messenging.messengingwebservices.db.Test.db;
 import com.springapplication.messenging.messengingwebservices.dto.test.CreateDTO;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendRequestDTO;
