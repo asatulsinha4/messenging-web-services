@@ -21,6 +21,7 @@ public class db {
         AllUsers = new HashSet<>();
         FriendRequest = new HashMap<>();
         Friends = new HashMap<>();
+        log.info("AllUsers, FriendRequest and Friends activated");
     }
     
 }

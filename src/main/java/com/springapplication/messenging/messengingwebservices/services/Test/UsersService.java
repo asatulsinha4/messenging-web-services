@@ -10,8 +10,8 @@ import com.springapplication.messenging.messengingwebservices.dto.test.CreateDTO
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendRequestDTO;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendsDTO;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UsersService {
 
-    Logger log = LoggerFactory.getLogger(UsersService.class);
+    // Logger log = LoggerFactory.getLogger(UsersService.class);
 
     /**
      * This creates a user.
