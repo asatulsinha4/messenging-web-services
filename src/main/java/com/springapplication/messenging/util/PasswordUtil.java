@@ -14,6 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class PasswordUtil {
 
+    /**
+     * Implementation of MD5 encoder using {@code MessageDigest}. Current Implementation 
+     * involves encoding password string followed by encoded username using {@code Base64UrlEncoder}
+     * @param password
+     * @param username
+     * @return Encoded password String
+     * @throws NoSuchAlgorithmException
+     */
     public String encode(String password, String username) throws NoSuchAlgorithmException{
         try{
             MessageDigest md5encoder = MessageDigest.getInstance("MD5");
@@ -32,10 +40,20 @@ public class PasswordUtil {
         }
     }
 
+    /**
+     * A MD5 encoder using {@code DigestUtils}
+     * @param password
+     * @return
+     */
     public String md5encoder(String password){
         return DigestUtils.md5DigestAsHex(password.getBytes());
     }
 
+    /**
+     * base64url encoder
+     * @param string
+     * @return Encoded string
+     */
     public static String base64UrlEncoder(String string){
         return Base64.getUrlEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
     }

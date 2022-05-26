@@ -72,20 +72,22 @@ public class AdminUserAuthService {
         return TestDb.AllAdminUsers.get(username);
     }
 
-    public boolean userAuth(AdminUser user) {
-        if (userExists(user.getUsername())) {
-            try {
+    public boolean userAuth(AdminUser user) throws Exception {
+        try{
+            if (userExists(user.getUsername())){
                 if (TestDb.AllAdminUsers.get(user.getUsername()).getPassword()
                         .equals(passwordUtil.encode(user.getPassword(), user.getUsername()))) {
-                    log.info("user: " + user.getUsername() + " authenticated");
+                    log.info("user "+user.getUsername()+" authenticated successfully");
                     return true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error("Error while authenticating user " + user.getUsername() + " :: " + e.getMessage());
+                    }
             }
+            log.warn("Invalid user credentials found for user: "+user.getUsername());
+            return false;
+        }catch(Exception exception){
+            log.error("Error occurred while authenticating for user: "+user.getUsername()+" :: "+exception.getMessage());
+            exception.printStackTrace();
+            throw exception;
         }
-        return false;
     }
 
 }

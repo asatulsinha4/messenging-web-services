@@ -6,9 +6,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
+import com.springapplication.messenging.models.AdminUser;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
  * 
  * @author Atul Sinha
  */
-@Service
+@Component
 public class JwtUtil {
 
     @Value("${auth.secret_key}")
@@ -38,11 +39,13 @@ public class JwtUtil {
     private final Key randomKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // generates a random key
 
     /**
-     * Use this function post authentication only.
+     * Use this function post authentication only. Generates {@code Jwt} token
      * @param userDetails
-     * @return Jwt token
+     * @param claims
+     * @param header
+     * @return {@code Jwt} token
      */
-    public String generateToken(UserDetails userDetails, Map<String, Object> claims, Map<String, Object> header) {
+    public String generateToken(AdminUser userDetails, Map<String, Object> claims, Map<String, Object> header) {
         return createToken(claims, header, userDetails, this.key);
     }
 
@@ -50,10 +53,10 @@ public class JwtUtil {
      * 
      * @param claims
      * @param header
-     * @param userDetails
+     * @param AdminUser
      * @return Jwt token
      */
-    private String createToken(Map<String, Object> claims, Map<String, Object> header, UserDetails userDetails, Key key) {
+    private String createToken(Map<String, Object> claims, Map<String, Object> header, AdminUser userDetails, Key key) {
 
         return Jwts.builder().addClaims(claims).setSubject(userDetails.getUsername())
                 .setIssuedAt(Date.from(Instant.now()))
@@ -97,10 +100,10 @@ public class JwtUtil {
 
     /**
      * Generate {@code Jwt} token with random key to make life harder for this particular user
-     * @param userDetails
+     * @param AdminUser
      * @return {@code Jwt} token
      */
-    public String tokenToMakeLifeHarder(UserDetails userDetails, Map<String, Object> claims, Map<String, Object> header){
+    public String tokenToMakeLifeHarder(AdminUser userDetails, Map<String, Object> claims, Map<String, Object> header){
         return createToken(claims, header, userDetails, this.randomKey);
     }
 

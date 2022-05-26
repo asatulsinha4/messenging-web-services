@@ -1,4 +1,4 @@
-package com.springapplication.messenging.messengingwebservices.Exceptions.test;
+package com.springapplication.messenging.messengingwebservices.Exceptions;
 
 public class CustomException extends Exception {
     public CustomException(String message){
