@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.springapplication.messenging.messengingwebservices.Exceptions.test.CustomException;
-import com.springapplication.messenging.messengingwebservices.db.Test.db;
 import com.springapplication.messenging.messengingwebservices.dto.test.CreateDTO;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendRequestDTO;
+import com.springapplication.messenging.messengingwebservices.db.TestDb;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendsDTO;
 
 // import org.slf4j.Logger;
@@ -40,13 +40,13 @@ public class UsersService {
         CreateDTO body = new CreateDTO();
         log.info("Request received for creating user: " + username);
         try {
-            if (db.AllUsers.contains(username)) {
+            if (TestDb.AllUsers.contains(username)) {
                 body.setStatusCode(400);
                 body.setReason("already exists");
                 body.setStatus("failure");
                 log.warn("user " + username + " already exists");
             } else {
-                db.AllUsers.add(username);
+                TestDb.AllUsers.add(username);
                 body.setStatusCode(201);
                 body.setUsername(username);
                 body.setStatus("success");
@@ -67,14 +67,14 @@ public class UsersService {
         log.info("Received request to fetch friend list for user: " + username);
         FriendsDTO body = new FriendsDTO();
         try {
-            if (!db.AllUsers.contains(username)) {
+            if (!TestDb.AllUsers.contains(username)) {
                 body.setStatus("failure");
                 body.setReason("no user found ");
                 body.setStatusCode(400);
                 log.warn("user: " + username + " does not exist!");
             } else {
                 try {
-                    List<String> friendList = new ArrayList<>(db.Friends.get(username));
+                    List<String> friendList = new ArrayList<>(TestDb.Friends.get(username));
                     friendList.get(0);
                     body.setFriends(friendList);
                     body.setStatusCode(200);
@@ -107,30 +107,30 @@ public class UsersService {
         log.info("request received to send friend request from " + user1 + " to " + user2);
         FriendRequestDTO body = new FriendRequestDTO();
         try {
-            if (db.AllUsers.contains(user1) && db.AllUsers.contains(user2)) {
-                db.FriendRequest.putIfAbsent(user1, new HashSet<>());
-                db.FriendRequest.putIfAbsent(user2, new HashSet<>());
-                db.Friends.putIfAbsent(user1, new HashSet<>());
-                if(db.FriendRequest.get(user1).contains(user2)) throw new CustomException("request already sent");
-                if(db.Friends.get(user1).contains(user2)) throw new CustomException(user1+" and "+user2+" are already friends");
-                if(db.FriendRequest.get(user2).contains(user1)){
+            if (TestDb.AllUsers.contains(user1) && TestDb.AllUsers.contains(user2)) {
+                TestDb.FriendRequest.putIfAbsent(user1, new HashSet<>());
+                TestDb.FriendRequest.putIfAbsent(user2, new HashSet<>());
+                TestDb.Friends.putIfAbsent(user1, new HashSet<>());
+                if(TestDb.FriendRequest.get(user1).contains(user2)) throw new CustomException("request already sent");
+                if(TestDb.Friends.get(user1).contains(user2)) throw new CustomException(user1+" and "+user2+" are already friends");
+                if(TestDb.FriendRequest.get(user2).contains(user1)){
                     log.info("friend request found from " + user2 + " to " + user1);
-                    db.FriendRequest.get(user2).remove(user1);
-                    db.Friends.putIfAbsent(user1, new HashSet<>());
-                    db.Friends.putIfAbsent(user2, new HashSet<>());
-                    db.Friends.get(user1).add(user2);
-                    db.Friends.get(user2).add(user1);
+                    TestDb.FriendRequest.get(user2).remove(user1);
+                    TestDb.Friends.putIfAbsent(user1, new HashSet<>());
+                    TestDb.Friends.putIfAbsent(user2, new HashSet<>());
+                    TestDb.Friends.get(user1).add(user2);
+                    TestDb.Friends.get(user2).add(user1);
                     log.info("request accepted :: " + user1 + " and " + user2 + " have become friends");
                 }else{
-                    db.FriendRequest.get(user1).add(user2);
+                    TestDb.FriendRequest.get(user1).add(user2);
                     log.info(user1 + " sent request successfully to " + user2);
                 }
                 body.setStatusCode(202);
                 body.setStatus("success");
             } else {
                 String users = "";
-                if(!db.AllUsers.contains(user1)) users = users+ user1 + " ";
-                if(!db.AllUsers.contains(user2)) users = users + user2 + " ";
+                if(!TestDb.AllUsers.contains(user1)) users = users+ user1 + " ";
+                if(!TestDb.AllUsers.contains(user2)) users = users + user2 + " ";
                 throw new CustomException("users: "+users+"do not exist");
             }
         } catch (Exception exception) {
