@@ -1,5 +1,6 @@
 package com.springapplication.messenging.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -23,16 +24,20 @@ public class PasswordUtil {
                 if(hex.length() == 1) hex = "0" + hex;
                 encodedPassword = encodedPassword + hex;
             }
-            encodedPassword = encodedPassword + Base64.getUrlEncoder().encodeToString(username.getBytes());
+            encodedPassword = encodedPassword + base64UrlEncoder(username);
             return encodedPassword;
         }catch (Exception exception){
             log.error("Error while encoding password :: "+exception.getMessage());
-            return "";
+            throw exception;
         }
     }
 
     public String md5encoder(String password){
         return DigestUtils.md5DigestAsHex(password.getBytes());
+    }
+
+    public static String base64UrlEncoder(String string){
+        return Base64.getUrlEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
     }
     
 }
