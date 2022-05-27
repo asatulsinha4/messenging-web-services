@@ -1,4 +1,4 @@
-package com.springapplication.messenging.messengingwebservices.db;
+package com.springapplication.messenging.messengingwebservices.Repository;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -7,7 +7,7 @@ import java.util.List;
 import com.springapplication.messenging.messengingwebservices.dto.test.CreateDTO;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendRequestDTO;
 import com.springapplication.messenging.messengingwebservices.Exceptions.CustomException;
-import com.springapplication.messenging.messengingwebservices.db.TestDb;
+import com.springapplication.messenging.messengingwebservices.Repository.TestDb;
 import com.springapplication.messenging.messengingwebservices.dto.test.FriendsDTO;
 
 // import org.slf4j.Logger;

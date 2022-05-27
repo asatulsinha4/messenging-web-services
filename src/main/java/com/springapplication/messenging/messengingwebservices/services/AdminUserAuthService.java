@@ -1,7 +1,7 @@
 package com.springapplication.messenging.messengingwebservices.services;
 
 
-import com.springapplication.messenging.messengingwebservices.db.TestDb;
+import com.springapplication.messenging.messengingwebservices.Repository.TestDb;
 import com.springapplication.messenging.models.AdminUser;
 import com.springapplication.messenging.util.PasswordUtil;
 

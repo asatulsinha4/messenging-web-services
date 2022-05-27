@@ -99,7 +99,8 @@ public class JwtUtil {
     }
 
     /**
-     * Generate {@code Jwt} token with random key to make life harder for this particular user
+     * Generate {@code Jwt} token with random key to make life harder for this particular user, as 
+     * token is validated using another key.So the user will have to login after every network call
      * @param AdminUser
      * @return {@code Jwt} token
      */
