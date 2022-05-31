@@ -18,7 +18,14 @@ public class AdminUserAuthService {
     @Autowired
     private PasswordUtil passwordUtil;
 
-    public void changePassword(String oldPassword, String newPassword, String username) {
+    /**
+     * Change password for a user
+     * @param oldPassword
+     * @param newPassword
+     * @param username
+     * @throws Exception
+     */
+    public void changePassword(String oldPassword, String newPassword, String username) throws Exception {
         log.info("Request recieved to change password for user: " + username);
         try {
             if (TestDb.AllAdminUsers.get(username).getPassword().equals(passwordUtil.encode(oldPassword, username))) {
@@ -29,10 +36,16 @@ public class AdminUserAuthService {
             }
         } catch (Exception exception) {
             log.error("Error occured while changing password for user: " + username + " :: " + exception.getMessage());
+            throw exception;
         }
     }
 
-    public void createUser(AdminUser user) {
+    /**
+     * Create a user
+     * @param user
+     * @throws Exception
+     */
+    public void createUser(AdminUser user) throws Exception {
         log.info("request received to create user: " + user.getUsername());
         if (userExists(user.getUsername())) {
             log.info(user.getUsername() + " already exists");
@@ -44,10 +57,15 @@ public class AdminUserAuthService {
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("Error occurred while creating user: " + user.getUsername() + " :: " + e.getMessage());
+                throw e;
             }
         }
     }
 
+    /**
+     * Delete a user
+     * @param username
+     */
     public void deleteUser(String username) {
         log.info("request received to delete user: " + username);
         if (TestDb.AllAdminUsers.remove(username) != null)
@@ -56,22 +74,44 @@ public class AdminUserAuthService {
             log.info("user not found");
     }
 
+    /**
+     * This function is used to update nuser details
+     * @param AdminUser
+     */
     public void updateUser(AdminUser user) {
         log.info("request received to update user: " + user.getUsername());
         TestDb.AllAdminUsers.put(user.getUsername(), user);
         log.info(user.getUsername() + " updated successfull");
     }
 
+    /**
+     * function to check if the user exists or not
+     * @param username
+     * @return true of user exists
+     */
     public boolean userExists(String username) {
-        if (TestDb.AllAdminUsers.containsKey(username))
-            return true;
+        if (TestDb.AllAdminUsers.containsKey(username)) return true;
         return false;
     }
 
+    /**
+     * 
+     * @param username
+     * @return AdminUser
+     * @throws UsernameNotFoundException
+     */
     public AdminUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        return TestDb.AllAdminUsers.get(username);
+        if(TestDb.AllAdminUsers.containsKey(username)) return TestDb.AllAdminUsers.get(username);
+        throw new UsernameNotFoundException("User not found");
     }
 
+    /**
+     * Use this function to authenticate any user.
+     * 
+     * @param user
+     * @return boolean value indicating auntentication status of the user 
+     * @throws Exception
+     */
     public boolean userAuth(AdminUser user) throws Exception {
         try{
             if (userExists(user.getUsername())){
